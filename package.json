@@ -1,0 +1,27 @@
+{
+  "name": "metarri-sdk",
+  "version": "1.0.0",
+  "description": "SDK for building apps on Metarri",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"No test yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Metarri/Metarri-SDK.git"
+  },
+  "keywords": [
+    "Metarri",
+    "SDK"
+  ],
+  "author": "Metarri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Metarri/Metarri-SDK/issues"
+  },
+  "homepage": "https://github.com/Metarri/Metarri-SDK#readme",
+  "devDependencies": {
+    "tsc": "^2.0.4",
+    "typescript": "^4.5.5"
+  }
+}
