@@ -4,7 +4,8 @@
   "description": "SDK for building apps on Metarri",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"No test yet\""
+    "test": "echo \"No test yet\"",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,11 @@
   },
   "homepage": "https://github.com/Metarri/Metarri-SDK#readme",
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "tsc": "^2.0.4",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
   }
 }
