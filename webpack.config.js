@@ -1,5 +1,7 @@
 const webpack = require("webpack");
 
+const PORT = 9000;
+
 const HAS_SOURCE_MAP = String(process.env.HAS_SOURCE_MAP) === 'true' ? true : false;
 
 const path = require('path');
@@ -43,7 +45,7 @@ const payload = {
     path: path.resolve(__dirname, 'dist'),  // __dirname
     publicPath: '/',
     // Capture name from the entry using a pattern
-    filename: "igamer-app.min.js"
+    filename: "metarri-sdk.min.js"
   },
 
   // How to resolve encountered imports
@@ -153,24 +155,33 @@ const payload = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   },
+  // devServer: {
+  //   colors: true,
+  //   contentBase: './dist',
+  //   historyApiFallback: true,
+  //   hot: true,
+  //   inline: true,
+  //   port: 3000,
+  //   progress: true,
+  //   stats: {
+  //     cached: true
+  //   }
+  // }
   devServer: {
-    colors: true,
-    contentBase: './dist',
-    historyApiFallback: true,
-    hot: true,
-    inline: true,
-    port: 3000,
-    progress: true,
-    stats: {
-      cached: true
-    }
-  }
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: PORT,
+  },
 };
 
 
 if (HAS_SOURCE_MAP) {
   payload.devtool = 'inline-source-map';
 }
+
+console.log(`Serving at: http://127.0.0.1:${PORT}/metarri-sdk.min.js`);
 
 
 module.exports = payload;
