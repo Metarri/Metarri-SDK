@@ -1,33 +1,22 @@
 const webpack = require("webpack");
 
-const isDev = process.env.NODE_ENV === "development";
-
+const HAS_SOURCE_MAP = String(process.env.HAS_SOURCE_MAP) === 'true' ? true : false;
 
 const path = require('path');
 const uglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-
-// const HtmlWebPackPlugin = require('html-webpack-plugin');
-// const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-// const assets = [{
-//     from: 'assets',
-//     to: 'assets'
-//   }
-// ];
-
+const Dotenv = require('dotenv-webpack');
 
 const uglifyWithOptions = new uglifyJsPlugin({
-  test: /\.m?(j|t)sx?(\?.*)?$/i,
-  sourceMap: isDev,
+  test: /\.m?(j|t)s(\?.*)?$/i,
+  sourceMap: HAS_SOURCE_MAP,
   extractComments: false,
-  cache: false,
+  cache: true,
   parallel: true,
   uglifyOptions: {
-    compress: true,
-    mangle: true,
+    compress: !HAS_SOURCE_MAP,
+    mangle: !HAS_SOURCE_MAP,
     warnings: false,
     ie8: false,
     output: {
@@ -37,9 +26,9 @@ const uglifyWithOptions = new uglifyJsPlugin({
 });
 
 
-const config = {
+const payload = {
   // Where to start bundling
-  entry: ".index.ts",
+  entry: "./src/index.ts",
 
   optimization: {
     minimizer: [
@@ -47,13 +36,14 @@ const config = {
     ],
   },
 
+
   // Where to output
   output: {
     // Output to the same directory or use dist child directory
     path: path.resolve(__dirname, 'dist'),  // __dirname
     publicPath: '/',
     // Capture name from the entry using a pattern
-    filename: "index.min.js"
+    filename: "igamer-app.min.js"
   },
 
   // How to resolve encountered imports
@@ -63,11 +53,8 @@ const config = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
-      {
-        test: /\.ts$/,
-        exclude: [/node_modules/],
-        loader: 'ts-loader'
-      },
+
+      // Begin: babel-loader
       {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
@@ -78,8 +65,8 @@ const config = {
               [
                 '@babel/preset-env',
                 {
-                  targets: "defaults"
-                  // targets: "ie 11"
+                  // targets: "defaults"
+                  targets: "ie 11"
                 }
               ]
             ],
@@ -89,17 +76,21 @@ const config = {
           }
         } // or we can use awesome-typescript-loader
       },
-      {
-        test: /\.html$/,
-        use: [
-          {
-            loader: "html-loader",
-            options: {
-              minimize: true
-            }
-          }
-        ]
-      },
+      // End: babel-loader
+
+      // Begin: esbuild-loader
+      // {
+      //   // test: /\.js$/,
+      //   test: /\.(ts|tsx|js|jsx)$/,
+      //   loader: 'esbuild-loader',
+      //   options: {
+      //     loader: 'tsx',
+      //     target: 'es2015',
+      //     tsconfigRaw: require('./tsconfig.json')
+      //   }
+      // },
+      // End: esbuild-loader
+
       {
         test: /\.scss$/,
         use: [
@@ -109,26 +100,29 @@ const config = {
           'sass-loader'
         ]
       },
-      {
-        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'assets/fonts/'
-          }
-        }]
-      },
-      {
-        test: /\.ico?$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: './'
-          }
-        }]
-      },
+
+      // {
+      //   test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+      //   use: [{
+      //     loader: 'file-loader',
+      //     options: {
+      //       name: '[name].[ext]',
+      //       outputPath: 'assets/fonts/'
+      //     }
+      //   }]
+      // },
+
+      // {
+      //   test: /\.ico?$/,
+      //   use: [{
+      //     loader: 'file-loader',
+      //     options: {
+      //       name: '[name].[ext]',
+      //       outputPath: './'
+      //     }
+      //   }]
+      // },
+
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
@@ -139,18 +133,14 @@ const config = {
 
   // What extra processing to perform
   plugins: [
-    // new FaviconsWebpackPlugin('./assets/images/logo.png'),
-    // new webpack.DefinePlugin({
-    //   SUBDIRECTORY: JSON.stringify(require("./package.json").subdirectory)
-    // }),
 
     // optimization
     uglifyWithOptions,
 
-    // new HtmlWebPackPlugin({
-    // template: "./src/index.html",
-    // filename: "./index.html"
-    // }),
+    new Dotenv({
+      allowEmptyValues: true, // allow empty variables (e.g. `FOO=`) (treat it as empty string, rather than missing)
+      systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
+    }),
 
     new CleanWebpackPlugin(),
 
@@ -172,15 +162,15 @@ const config = {
     port: 3000,
     progress: true,
     stats: {
-      errorDetails: true,
-      cached: false
+      cached: true
     }
   }
+};
+
+
+if (HAS_SOURCE_MAP) {
+  payload.devtool = 'inline-source-map';
 }
 
-if (isDev) {
-  config.devtool = 'inline-source-map';
-}
 
-
-module.exports = config;
+module.exports = payload;

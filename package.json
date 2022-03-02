@@ -2,11 +2,15 @@
   "name": "metarri-sdk",
   "version": "1.0.0",
   "description": "SDK for building apps on Metarri",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"No test yet\"",
-    "build": "webpack --mode production"
+    "start": "npm run start:dev",
+    "start:dev": "HAS_SOURCE_MAP=true webpack-dev-server --config ./webpack.config.js --mode development --progress",
+    "build:full-dev": "HAS_SOURCE_MAP=true webpack --config ./webpack.config.js --mode development --progress",
+    "build:dev": "HAS_SOURCE_MAP=true webpack --config ./webpack.config.js --mode production --progress",
+    "build": "HAS_SOURCE_MAP=false webpack --config ./webpack.config.js --mode production --progress"
   },
+  "author": "Metarri",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Metarri/Metarri-SDK.git"
@@ -15,18 +19,50 @@
     "Metarri",
     "SDK"
   ],
-  "author": "Metarri",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Metarri/Metarri-SDK/issues"
   },
   "homepage": "https://github.com/Metarri/Metarri-SDK#readme",
   "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/plugin-transform-runtime": "^7.16.4",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.16.0",
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/lab": "^5.0.0-alpha.59",
+    "@mui/styles": "^5.2.3",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@types/redux-localstorage": "^1.0.8",
+    "babel-loader": "^8.2.3",
+    "dotenv-webpack": "^7.0.3",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^5.60.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.1",
+    "@reduxjs/toolkit": "^1.6.2",
+    "@types/react-swipeable-views": "^0.13.1",
+    "array-uniq": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0",
-    "tsc": "^2.0.4",
-    "typescript": "^4.5.5",
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "firebase": "^9.5.0",
+    "html-table-builder": "^1.0.1",
+    "re-resizable": "^6.9.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.4",
+    "react-redux": "^7.2.6",
+    "react-resizable": "^3.0.4",
+    "react-swipeable-views": "^0.14.0",
+    "redux-localstorage": "^0.4.1",
+    "sweetalert2": "^11.3.6"
   }
 }
