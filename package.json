@@ -53,6 +53,7 @@
     "@types/react-swipeable-views": "^0.13.1",
     "array-uniq": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0",
+    "emmet": "^2.3.6",
     "firebase": "^9.5.0",
     "html-table-builder": "^1.0.1",
     "re-resizable": "^6.9.1",
