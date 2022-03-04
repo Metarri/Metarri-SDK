@@ -1,5 +1,5 @@
 {
-  "name": "metarri-sdk",
+  "name": "@metarri/metarri-sdk",
   "version": "1.0.0",
   "description": "SDK for building apps on Metarri",
   "main": "src/index.ts",
@@ -17,7 +17,10 @@
   },
   "keywords": [
     "Metarri",
-    "SDK"
+    "SDK",
+    "Metaverse",
+    "AR",
+    "VR"
   ],
   "license": "ISC",
   "bugs": {
