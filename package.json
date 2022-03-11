@@ -8,7 +8,8 @@
     "start:dev": "HAS_SOURCE_MAP=true webpack-dev-server --config ./webpack.config.js --mode development --progress",
     "build:full-dev": "HAS_SOURCE_MAP=true webpack --config ./webpack.config.js --mode development --progress",
     "build:dev": "HAS_SOURCE_MAP=true webpack --config ./webpack.config.js --mode production --progress",
-    "build": "HAS_SOURCE_MAP=false webpack --config ./webpack.config.js --mode production --progress"
+    "build": "HAS_SOURCE_MAP=false webpack --config ./webpack.config.js --mode production --progress",
+    "publish-to-registry": "npm publish --access public"
   },
   "author": "Metarri",
   "repository": {
