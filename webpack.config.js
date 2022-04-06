@@ -45,7 +45,7 @@ const payload = {
     path: path.resolve(__dirname, 'dist'),  // __dirname
     publicPath: '/',
     // Capture name from the entry using a pattern
-    filename: "metarri-sdk.min.js"
+    filename: "index.js"
   },
 
   // How to resolve encountered imports
