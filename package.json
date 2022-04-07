@@ -1,6 +1,6 @@
 {
   "name": "@metarri/metarri-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SDK for building apps on Metarri",
   "main": "dist/index.ts",
   "bin": {

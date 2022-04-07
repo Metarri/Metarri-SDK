@@ -13,64 +13,87 @@ const printVersion = () => {
     return process.exit(0);
 };
 
-program
-    .name('metarri-cli')
-    .option('-v, --version', 'Prints the CLI version')
-    .description('Command line tooling for the Metarri SDK')
-    .version(VERSION, '-v');
-
 program.command('package')
     .description('Packages an app into a .MTRI archive for uploading to Metarri Store')
     .argument('<path>', 'The relative or absolute path to the directory containing the apps soure files')
     .action((path, options) => {
         const absolutePath = resolve(path);
-        console.log(`Begin: packaaging app at ${absolutePath}`);
+        console.log(`Begin: packaging app at ${absolutePath}`);
 
         (async () => {
 
+            let bundleName = `${absolutePath.split('/').pop()}.MTRI`;
+            fs.writeFileSync(bundleName, '');
+            bundleName = resolve(bundleName);
+
             /**
-             * @type { path: string; data: string }
+             * @type {string} string
              */
-            const files = [];
 
-            const dirList = fs.readdirSync(absolutePath);
-
+            /**
+             * 
+             * @param {string} path 
+             */
             const hashFile = (path) => {
-                const fileContent = fs.readFileSync(path, 'utf8');
+                console.log('Adding ', path, ' to .MTRI bundle');
 
-                files.push({
-                    path: path,
+                const fileContent = fs.readFileSync(path).toString('base64url');
+
+                const payload = JSON.stringify({
+                    path: path.replace(`${absolutePath}/`, ''),
                     data: fileContent
                 });
+
+                fs.appendFileSync(bundleName, `${payload}\n`);
             }
 
             const bundleDirectoryRecursively = (dirPath) => {
-                for (const filePath of dirList) {
-                    if (fs.statSync(filePath).isDirectory()) {
+                const dirList = fs.readdirSync(dirPath);
+
+                for (const _filePath of dirList) {
+                    const filePath = resolve(dirPath, _filePath);
+
+                    /**
+                     * @type {fs.Stats} fs.Stats
+                     */
+                    let stat;
+                    try {
+                        stat = fs.statSync(filePath);
+                    } catch (error) {
+                        console.log('There is an error with the file: ', path);
+                        continue;
+                    }
+
+                    if (stat.isDirectory()) {
                         // is directory
                         bundleDirectoryRecursively(filePath);
-                    } else {
+                    } else if (stat.isFile()) {
                         // is file
                         hashFile(filePath);
                     }
                 }
             };
 
+            bundleDirectoryRecursively(absolutePath);
+
+            console.log('\r\nFinished: packaging app at ', bundleName, '\r\n');
+
         })();
     });
 
 program.command('create')
-    .description('Creates a new Metarri-Native app with the specified option, in the current directory')
+    .description('Creates a new Metarri app with the specified options, in the current directory')
     .argument('<app_name>', 'The app name')
     .action((app_name, options) => {
         // const path = resolve(app_name);
-        fs.mkdir(app_name)
+        console.log('Create');
+        fs.mkdirSync(app_name);
     });
 
 program.command('version')
     .description('Prints the CLI version')
     .action((app_name, options) => {
-        // 
+        printVersion();
     });
 
 program.parse();
